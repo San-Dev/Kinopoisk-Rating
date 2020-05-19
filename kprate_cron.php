@@ -51,7 +51,7 @@ function xfieldsdatasave(array $xfields): string
 
 function getContent(int $kinopoisk_id): string
 {
-	$ch = curl_init('https://www.kinopoisk.ru/rating/' . $kinopoisk_id . '.xml');
+	$ch = curl_init('https://rating.kinopoisk.ru/' . $kinopoisk_id . '.xml');
 	curl_setopt_array($ch, [
 		CURLOPT_RETURNTRANSFER	=> true,
 		CURLOPT_HEADER			=> false,
