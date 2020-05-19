@@ -104,7 +104,7 @@ while ($row = $db->get_row($sql)) {
 		//$ratings['imdb_rate'] = round($ratings['imdb_rate'], 2);
 
 		foreach ($ratings as $k => $v) {
-			$xfields[$fields[$k]] = $v;
+			$fields[$k] && $xfields[$fields[$k]] = $v;
 		}
 		
 		if ($fields['kp_rate_vote'] && $ratings['kp_votes']) {
