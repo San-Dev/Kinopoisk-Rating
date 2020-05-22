@@ -8,14 +8,29 @@ define('DATALIFEENGINE', true);
 define('ROOT_DIR', __DIR__);
 define('ENGINE_DIR', ROOT_DIR . '/engine');
 
-@include (ENGINE_DIR . '/data/config.php');
+if (file_exists(ENGINE_DIR . '/classes/plugins.class.php')) {
+	include_once ENGINE_DIR . '/classes/plugins.class.php';
+} else {
+	@ini_set('pcre.recursion_limit', 10000000 );
+	@ini_set('pcre.backtrack_limit', 10000000 );
+	@ini_set('pcre.jit', false);
+
+	@include_once (ENGINE_DIR . '/data/config.php');
+	require_once (ENGINE_DIR . '/classes/mysql.php');
+	require_once (ENGINE_DIR . '/data/dbconfig.php');
+
+	abstract class DLEPlugins {
+		public static function Check($source = '') {
+			return $source;
+		}
+	}
+}
+
 date_default_timezone_set($config['date_adjust']);
-require_once __DIR__ . '/language/Russian/website.lng';
+include_once (DLEPlugins::Check(ROOT_DIR . '/language/' . $config['langs'] . '/website.lng'));
 setlocale(LC_NUMERIC, "C");
 
-require_once ENGINE_DIR . '/classes/mysql.php';
-require_once ENGINE_DIR . '/data/dbconfig.php';
-require_once ENGINE_DIR . '/modules/functions.php';
+require_once (DLEPlugins::Check(ENGINE_DIR . '/modules/functions.php'));
 
 if (!isset($argv)) {
 	echo 'php -f ' . __DIR__ . $_SERVER['SCRIPT_NAME'] . ' > ' . ROOT_DIR . '/engine/data/kprate.log 2>&1 &';
