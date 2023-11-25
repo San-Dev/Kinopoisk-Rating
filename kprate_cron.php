@@ -117,6 +117,12 @@ while ($row = $db->get_row($sql)) {
 
 		//$ratings['kp_rate'] = round($ratings['kp_rate'], 2); //округлять рейтинг до 2го знака после запятой
 		//$ratings['imdb_rate'] = round($ratings['imdb_rate'], 2);
+		//Шоб не затирало проставленные рейтинги, при условии, что на апи отдались пустоты
+		foreach ($ratings as $key => $value) {
+		    if (empty($value)) {
+			unset($ratings[$key]);
+		    }
+		}
 
 		foreach ($ratings as $k => $v) {
 			$fields[$k] && $xfields[$fields[$k]] = $v;
